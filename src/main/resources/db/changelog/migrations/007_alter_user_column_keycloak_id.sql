@@ -1,0 +1,1 @@
+ALTER TABLE users RENAME COLUMN keycloakId TO keycloak_id

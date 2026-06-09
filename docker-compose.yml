@@ -1,7 +1,8 @@
 services:
-  postgres_db:
+  # Application Database
+  backend_postgres_db:
     image: postgres:15
-    container_name: my_postgres_container
+    container_name: my_backend_postgres_container
     restart: always
     environment:
       POSTGRES_USER: myuser
@@ -19,24 +20,87 @@ services:
     networks:
       - my_personal_network
 
+  # Keycloak Database
+  keycloak-db:
+    image: postgres:16-alpine
+    container_name: user_api_keycloak_db
+    restart: always
+    environment:
+      POSTGRES_DB: user_api_keycloak_database
+      POSTGRES_USER: ${KC_DB_USER:-user_api_keycloak_user}
+      POSTGRES_PASSWORD: ${KC_DB_PASSWORD:-user_api_keycloak_password}
+    ports:
+      - "5434:5432"
+    volumes:
+      - keycloak_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user_api_keycloak_user -d user_api_keycloak_database" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - my_personal_network
+
+  # Keycloak Server
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: user-api-keycloak-server
+    command: start-dev --import-realm
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/user_api_keycloak_database
+      KC_DB_USERNAME: ${KC_DB_USER:-user_api_keycloak_user}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD:-user_api_keycloak_password}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_ADMIN_USER:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_ADMIN_PASSWORD:-admin}
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT: "false"
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+      JAVA_OPTS_APPEND: "-Dkeycloak.migration.strategy=OVERWRITE_EXISTING"
+    #      KC_HOSTNAME: keycloak
+    healthcheck:
+      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000; echo -e 'GET /health/live HTTP/1.1\r\nhost: localhost\r\nConnection: close\r\n\r\n' >&3; grep -q 'HTTP/1.1 200 OK' <&3" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - ./user-api-realm.json:/opt/keycloak/data/import/realm.json:ro
+    ports:
+      - "8081:8080"
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    networks:
+      - my_personal_network
+
+#  Springboot application
   springboot-app:
     build: .
     container_name: springboot_app
     restart: on-failure
     depends_on:
-      postgres_db:
+      keycloak:
+        condition:
+          service_healthy
+      backend_postgres_db:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_db:5432/mydatabase
+      SPRING_DATASOURCE_URL: jdbc:postgresql://backend_postgres_db:5432/mydatabase
       SPRING_DATASOURCE_USERNAME: myuser
       SPRING_DATASOURCE_PASSWORD: mypassword
+      KEYCLOAK_SERVER_URL: http://keycloak:8080
     ports:
-      - "8084:8080"
+      - "8084:8082"
     networks:
       - my_personal_network
 
+
 volumes:
   postgres_data:
+  keycloak_db_data:
+
 
 networks:
   my_personal_network:

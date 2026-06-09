@@ -1,0 +1,50 @@
+{
+  "realm": "user-api",
+  "enabled": true,
+  "registrationEmailAsUsername": true,
+  "verifyEmail": false,
+  "displayName": "User Api Operations",
+  "roles": {
+    "realm": [
+      { "name": "owner", "description": "this is the owner" },
+      { "name": "manager", "description": "" },
+      { "name": "staff", "description": "" },
+      { "name": "super_admin", "description": "" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "user-api-backend",
+      "webOrigins": ["+"],
+      "redirectUris": ["*"],
+      "attributes": {
+        "post.logout.redirect.uris": "+",
+        "display.on.consent.screen": "false",
+        "pkce.code.challenge.method": "S256"
+      },
+      "name": "User Api Backend Service",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "user-api-secret-2026",
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "fullScopeAllowed": true,
+      "protocolMappers": [
+        {
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "config": {
+            "multivalued": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "roles"
+          }
+        }
+      ]
+    }
+  ]
+}

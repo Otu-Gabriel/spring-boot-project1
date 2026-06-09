@@ -7,5 +7,10 @@
 
     <include file="db/changelog/migrations/001_initial_schema.sql"/>
     <include file="db/changelog/migrations/002_alter_user_name.sql"/>
-
+    <include file="db/changelog/migrations/003_alter_user_columns.sql"/>
+    <include file="db/changelog/migrations/004_create_category_table.sql"/>
+    <include file="db/changelog/migrations/005_alter_user_gender.sql"/>
+    <include file="db/changelog/migrations/006_create_role_column_in_users_table.sql"/>
+    <include file="db/changelog/migrations/007_alter_user_column_keycloak_id.sql"/>
+    <include file="db/changelog/migrations/008_alter_user_column_password.sql"/>
 </databaseChangeLog>

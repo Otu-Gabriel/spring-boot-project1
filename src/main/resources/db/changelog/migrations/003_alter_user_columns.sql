@@ -1,0 +1,6 @@
+ALTER TABLE USERS RENAME COLUMN password_hash  TO password;
+
+ALTER TABLE USERS RENAME COLUMN gender   TO sex;
+
+ALTER TABLE USERS RENAME COLUMN phone_number   TO phone;
+

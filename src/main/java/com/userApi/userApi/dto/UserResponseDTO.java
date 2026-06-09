@@ -8,5 +8,6 @@ public record UserResponseDTO(
         String name,
         String email,
         String sex,
-        String phone
+        String phone,
+        String role
 ) {}

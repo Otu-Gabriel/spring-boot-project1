@@ -26,6 +26,9 @@ public record UserRequestDTO(
                regexp = "^(?=.*[!@#$%^&*(),.?\":{}|<>]).+$",
                message = "Password must include special character"
        )
-        String password
+        String password,
+
+        String role
+
 
 ) {}

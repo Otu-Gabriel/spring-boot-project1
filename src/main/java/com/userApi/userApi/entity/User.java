@@ -1,6 +1,7 @@
 package com.userApi.userApi.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Data
@@ -25,7 +26,7 @@ public class User {
 
     @Getter
     @Setter
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Getter
@@ -36,8 +37,17 @@ public class User {
     @Column(name="phone")
     private String phone;
 
-    @Column(name = "password")
-    private String password;
+    @Getter
+    @Setter
+    @Column(unique = true, name = "keycloakId")
+    private String keycloakId;
+
+
+    @Column(name = "role")
+    @NotBlank(message = "Role must not be empty")
+    @Getter
+    @Setter
+    private String role;
 
 //    public User(String name, String email, String sex, String phone, String password){}
 

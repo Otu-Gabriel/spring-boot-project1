@@ -24,6 +24,7 @@ public class UserMapper {
                 .email(user.getEmail())
                 .sex(user.getSex())
                 .phone(user.getPhone())
+                .role(user.getRole())
                 .build();
 
         return userResponseDTO;
@@ -43,7 +44,7 @@ public class UserMapper {
                 .email(dto.email())
                 .sex(dto.sex())
                 .phone(dto.phone())
-                .password(dto.password())
+                .role(dto.role())
                 .build();
 
         return user;

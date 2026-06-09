@@ -15,6 +15,8 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     // Handle specific exception
+
+    //User not found Exception
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleUserNotFound(UserNotFoundException ex) {
 
@@ -23,8 +25,32 @@ public class GlobalExceptionHandler {
         );
     }
 
-//    import org.springframework.web.bind.MethodArgumentNotValidException;
+    // Category not found exception
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCategoryNotFound( CategoryNotFoundException ex){
+       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+        new ApiResponse<>(false, ex.getMessage(),null)
+       );
 
+    }
+
+    //
+//    Keycloak Role not found exception
+    @ExceptionHandler(KeycloakUserCreationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUserCreationError(KeycloakUserCreationException ex){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                new ApiResponse<>(false, ex.getMessage(), null)
+        );
+    }
+
+    @ExceptionHandler(InvalidRoleException.class)
+    public ResponseEntity<ApiResponse<Void>>handleInvalidRoleException(InvalidRoleException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ApiResponse<>(false, ex.getMessage(), null)
+        );
+    }
+
+    //    Fields Valiation exception
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Object>> handleValidationErrors(
             MethodArgumentNotValidException ex) {
@@ -37,6 +63,15 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 new ApiResponse<>(false, "Validation failed", errors)
+        );
+    }
+
+
+    //    Email already exist exception
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleEmailAlreadyExists(EmailAlreadyExistsException ex){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                new ApiResponse<>(false, ex.getMessage(), null)
         );
     }
 
