@@ -46,5 +46,21 @@
         }
       ]
     }
+  ],
+  "users": [
+    {
+      "username": "service-account-user-api-backend",
+      "enabled": true,
+      "serviceAccountClientId": "user-api-backend",
+      "clientRoles": {
+        "realm-management": [
+          "manage-users",
+          "manage-realm",
+          "view-realm",
+          "query-roles",
+          "query-users"
+        ]
+      }
+    }
   ]
 }

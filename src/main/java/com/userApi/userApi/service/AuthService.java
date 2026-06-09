@@ -5,31 +5,33 @@ import com.userApi.userApi.dto.LoginResponseDTO;
 import com.userApi.userApi.dto.UserRequestDTO;
 import com.userApi.userApi.dto.UserResponseDTO;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class AuthService {
 
-    private final KeycloakService keycloakService;
-    private final UserService userService;
+    KeycloakService keycloakService;
+    UserService userService;
 
-    public AuthService(
-            KeycloakService keycloakService,
-            UserService userService
-    ) {
-        this.keycloakService = keycloakService;
-        this.userService = userService;
-    }
+//    public AuthService(
+//            KeycloakService keycloakService,
+//            UserService userService
+//    ) {
+//        this.keycloakService = keycloakService;
+//        this.userService = userService;
+//    }
 
     public UserResponseDTO register(
             UserRequestDTO dto
     ) {
 
         // validate role exists first
-//        keycloakService.validateRole(dto.role());
+        keycloakService.validateRole(dto.role());
 
         String keycloakUserId = null;
 
@@ -80,7 +82,7 @@ public class AuthService {
     public LoginResponseDTO login(
             LoginRequestDTO dto
     ) {
-
+        log.info("call for login came here");
         return keycloakService.login(
                 dto.username(),
                 dto.password()

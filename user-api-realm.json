@@ -25,7 +25,7 @@
       "name": "User Api Backend Service",
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "${USER_API_KEYCLOAK_CLIENT_SECRET:user-api-secret-2026}",
+      "secret": "user-api-secret-2026",
       "directAccessGrantsEnabled": true,
       "standardFlowEnabled": true,
       "serviceAccountsEnabled": true,
@@ -45,6 +45,22 @@
           }
         }
       ]
+    }
+  ],
+  "users": [
+    {
+      "username": "service-account-user-api-backend",
+      "enabled": true,
+      "serviceAccountClientId": "user-api-backend",
+      "clientRoles": {
+        "realm-management": [
+          "manage-users",
+          "manage-realm",
+          "view-realm",
+          "query-roles",
+          "query-users"
+        ]
+      }
     }
   ]
 }
