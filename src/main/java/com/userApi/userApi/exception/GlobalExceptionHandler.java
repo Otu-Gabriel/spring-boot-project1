@@ -40,6 +40,22 @@ public class GlobalExceptionHandler {
 
     }
 
+//    Brand Not Found Exception
+    @ExceptionHandler(BrandNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleBrandNotFound(BrandNotFoundException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ApiResponse<>(false,ex.getMessage(),null)
+            );
+    }
+
+    //    Product Not Found Exception
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleBrandNotFound(ProductNotFoundException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ApiResponse<>(false,ex.getMessage(),null)
+            );
+    }
+
     //
 //    Keycloak Role not found exception
     @ExceptionHandler(KeycloakUserCreationException.class)

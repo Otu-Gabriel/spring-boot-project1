@@ -100,7 +100,7 @@ public class KeycloakService {
         return user;
     }
 
-    public void assignRoleToUser(String userId, String roleName) {
+    public void  assignRoleToUser(String userId, String roleName) {
         RealmResource realm = keycloak.realm(realmName);
 
         RoleRepresentation role = realm.roles()

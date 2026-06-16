@@ -5,11 +5,13 @@ import com.userApi.userApi.dto.CategoryResponseDTO;
 import com.userApi.userApi.response.ApiResponse;
 import com.userApi.userApi.service.CategoryService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
@@ -21,6 +23,7 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<CategoryResponseDTO>> createCategory(@Valid @RequestBody CategoryRequestDTO categoryRequestDTO){
+        log.info("Category controller was reached");
         return ResponseEntity.ok(
                 new ApiResponse<>(true, "Category created successfully", categoryService.createCategory(categoryRequestDTO) )
         );

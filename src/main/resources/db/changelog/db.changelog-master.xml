@@ -13,4 +13,6 @@
     <include file="db/changelog/migrations/006_create_role_column_in_users_table.sql"/>
     <include file="db/changelog/migrations/007_alter_user_column_keycloak_id.sql"/>
     <include file="db/changelog/migrations/008_alter_user_column_password.sql"/>
+    <include file="db/changelog/migrations/009_create_brand_table.sql"/>
+    <include file="db/changelog/migrations/010_create_product_table.sql"/>
 </databaseChangeLog>
